@@ -14,7 +14,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    overflow-x: hidden;
+    color:#ddd;
+    // overflow-x: hidden;
 }
 
 #background-slider {
@@ -31,14 +32,76 @@ body {
 #weather-block {
     position: fixed;
     top: 20px;
-    right: 20px;
+    right: 100px;
     width: 200px;
-    background-color: $background-color;
-    border: 1px solid $border-color;
-    border-radius: 8px;
-    box-shadow: $box-shadow;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
+
+
+    .search {
+        width: 10%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        input {
+            background: #ebfffc;
+            color: #555;
+            padding: 5px 10px;
+            height: 30px;
+            border-radius: 30px;
+            // flex: 1;
+            margin-right: 5px;
+            font-size: 18px;
+        }
+
+
+        button {
+            background: #ebfffc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            padding: 10px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+
+            img {
+                width: 14px;
+
+            }
+        }
+    }
+
+    .error {
+        text-align: left;
+        margin-left: 10px;
+        font-size: 14px;
+        margin-top: 10px;
+        display: none;
+        color:#ddd;
+    }
+
+    .weather {
+        // display: none;
+        .weather-icon{
+            width: 50px;
+            margin-top: 10px;
+        }
+
+        h1 {
+            font-size: 20px;
+            font-weight: 500;
+
+        }
+
+        h2 {
+            font-size: 16px;
+            font-weight: 400;
+            margin-top: 5px;
+        }
+
+       
+    }
 
     &.collapsed {
         max-height: $collapsed-height;
@@ -49,30 +112,25 @@ body {
     }
 }
 
-#weather-content {
-    padding: 10px;
-    text-align: center;
-}
+// #weather-content {
+//     padding: 10px;
+//     text-align: center;
+// }
 
-#weather-icon {
-    width: $weather-icon-size;
-    height: $weather-icon-size;
-}
+// #weather-icon {
+//     width: $weather-icon-size;
+//     height: $weather-icon-size;
+// }
 
-#temperature {
-    font-size: 20px;
-}
+// #temperature {
+//     font-size: 20px;
+// }
 
 #date-time-block {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: $background-color;
-    padding: 20px;
-    border: 1px solid $border-color;
-    border-radius: 8px;
-    box-shadow: $box-shadow;
 }
 
 #todo-list {

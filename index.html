@@ -11,9 +11,17 @@
 <body>
     <div id="background-slider"></div>
     <div id="weather-block" class="collapsed">
-        <div id="weather-content">
-            <img id="weather-icon" src="images/clouds.png" alt="Weather Icon">
-            <div id="temperature">20°C</div>
+        <div class="search">
+            <input type="text" placeholder="введите город" spellcheck="false">
+            <button><img src="images/search.png"></button>
+        </div>
+        <div class="error">
+            <p>Ошибка в названии города</p>
+        </div>
+        <div class="weather">
+            <img src="images/rain.png" class="weather-icon">
+            <h1 class="temp">22°c</h1>
+            <h2 class="city">саратов</h2>
         </div>
     </div>
     <div id="date-time-block">
