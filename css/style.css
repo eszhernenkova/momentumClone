@@ -93,6 +93,8 @@ body {
   background-size: cover;
   background-image: url("images/clouds.png");
   z-index: -1;
+  -webkit-filter: brightness(50%);
+          filter: brightness(50%);
 }
 
 #weather-block {
@@ -103,15 +105,13 @@ body {
 }
 #weather-block .search {
   width: 10%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  display: none;
 }
 #weather-block .search input {
   background: #ebfffc;
@@ -150,6 +150,9 @@ body {
   display: none;
   color: #ddd;
 }
+#weather-block .weather {
+  width: 200px;
+}
 #weather-block .weather .weather-icon {
   width: 50px;
   margin-top: 10px;
@@ -176,6 +179,11 @@ body {
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+}
+#date-time-block #date-time {
+  font-size: 60px;
+  color: #ffffff;
+  text-align: center;
 }
 
 #todo-list {

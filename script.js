@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchBtn = document.querySelector(".search button");
     const weatherIcon = document.querySelector(".weather-icon");
     
-    const weatherStorageKey = 'weatherData';
+   const cityData = document.getElementById("weater");
 
     const defaultCity = "Краснодар";
 
@@ -38,45 +38,55 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if(data.weather[0].main == "Mist"){
                 weatherIcon.src = "images/mist.png"
             }
-    
-            document.querySelector(".weather").style.display = "block";
-            document.querySelector(".error").style.display="none";
+            
+            const weatherElement = document.querySelector(".weather");
+            weatherElement.style.display = "flex";
+            weatherElement.style.alignItems = "center";
+            weatherElement.style.justifyContent = "space-around";
+            document.querySelector(".error").style.display = "none";
+
+            saveData();
         } 
     }
 
-    cherWeather(defaultCity);
-
-    // function loadWeatherFromLocalStorage() {
-    //     const storedWeatherData = localStorage.getItem(weatherStorageKey);
-        
-    //     if (storedWeatherData) {
-    //         const data = JSON.parse(storedWeatherData);
-    //         displayWeather(data);
-    //     } else {
-    //         fetchWeather(defaultCity);
-    //     }
-    // }
-    
-    // // Отобразить погоду для города по умолчанию при загрузке страницы
-    // loadWeatherFromLocalStorage();
     
     weatherBlock.addEventListener('click', (event) => {
         if (event.target !== searchBox && event.target !== searchBtn) {
             if (weatherBlock.classList.contains('collapsed')) {
                 weatherBlock.classList.remove('collapsed');
                 weatherBlock.classList.add('expanded');
-                document.querySelector(".search").style.display = "flex"; // Показываем инпут
+                document.querySelector(".search").style.display = "flex"; 
             } else {
                 weatherBlock.classList.remove('expanded');
                 weatherBlock.classList.add('collapsed');
-                document.querySelector(".search").style.display = "none"; // Скрываем инпут
+                document.querySelector(".search").style.display = "none"; 
             }
         }
     });
     
+    
+
+    function saveData() {
+        const city = document.querySelector(".city").innerHTML;
+
+        localStorage.setItem("city", city);
+    }
+
+    function loadData() {
+        const savedCity = localStorage.getItem("city");
+    
+        if (savedCity) {
+            cherWeather(savedCity);
+        } else {
+            cherWeather(defaultCity);
+        }
+    }
+
+    window.addEventListener('load', loadData);
+
     searchBtn.addEventListener("click", ()=>{
-        console.log('Search button clicked');
         cherWeather(searchBox.value);
+        
     });
     
     document.addEventListener('keyup', function(event){
@@ -84,6 +94,10 @@ document.addEventListener('DOMContentLoaded', () => {
             cherWeather(searchBox.value);
        }
     })
+
+    cherWeather(defaultCity);
+
+
 
     todoToggle.addEventListener('click', () => {
         if (todoList.classList.contains('collapsed')) {
@@ -97,8 +111,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateDateTime() {
         const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        const timeString = `${hours}:${minutes}:${seconds}`;
+
+        const days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+        const months = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
+        const dayOfWeek = days[now.getDay()];
+        const dayOfMonth = now.getDate();
+        const month = months[now.getMonth()];
+
+        const dateString = `${dayOfMonth} ${month}, ${dayOfWeek}`;
+
+
         const dateTime = document.getElementById('date-time');
-        dateTime.textContent = now.toLocaleString();
+        dateTime.innerHTML = `<div>${timeString}</div><div>${dateString}</div>`;
     }
 
     setInterval(updateDateTime, 1000);

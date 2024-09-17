@@ -15,7 +15,7 @@ body {
     padding: 0;
     font-family: Arial, sans-serif;
     color:#ddd;
-    // overflow-x: hidden;
+
 }
 
 #background-slider {
@@ -27,6 +27,8 @@ body {
     background-size: cover;
     background-image: url('images/clouds.png');
     z-index: -1;
+    filter: brightness(50%)
+    
 }
 
 #weather-block {
@@ -38,9 +40,9 @@ body {
 
     .search {
         width: 10%;
-        display: flex;
         align-items: center;
         justify-content: space-between;
+        display: none;
 
         input {
             background: #ebfffc;
@@ -48,7 +50,6 @@ body {
             padding: 5px 10px;
             height: 30px;
             border-radius: 30px;
-            // flex: 1;
             margin-right: 5px;
             font-size: 18px;
         }
@@ -82,7 +83,8 @@ body {
     }
 
     .weather {
-        // display: none;
+        width: 200px;
+
         .weather-icon{
             width: 50px;
             margin-top: 10px;
@@ -112,26 +114,23 @@ body {
     }
 }
 
-// #weather-content {
-//     padding: 10px;
-//     text-align: center;
-// }
-
-// #weather-icon {
-//     width: $weather-icon-size;
-//     height: $weather-icon-size;
-// }
-
-// #temperature {
-//     font-size: 20px;
-// }
 
 #date-time-block {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    
+    
+    #date-time {
+        font-size: 60px;
+        color: #ffffff;
+        text-align: center;
+        
+    }
 }
+
+
 
 #todo-list {
     position: fixed;
