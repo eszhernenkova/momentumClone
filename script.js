@@ -16,6 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const defaultCity = "Краснодар";
 
+
+    const inputBox = document.getElementById("inpur-box");
+    const listConteiner = document.getElementById("list-conteiner");
+
     async function cherWeather(city) {
         const response = await fetch(apiUrl + city +`&appid=${apiKey}`);
         if(response.status == 404){
@@ -50,16 +54,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     
+
+
     weatherBlock.addEventListener('click', (event) => {
         if (event.target !== searchBox && event.target !== searchBtn) {
             if (weatherBlock.classList.contains('collapsed')) {
                 weatherBlock.classList.remove('collapsed');
                 weatherBlock.classList.add('expanded');
-                document.querySelector(".search").style.display = "flex"; 
+
+                document.querySelector(".search").style.display = "flex";
+                document.querySelector(".weather").style.display = "flex";
+
             } else {
                 weatherBlock.classList.remove('expanded');
                 weatherBlock.classList.add('collapsed');
-                document.querySelector(".search").style.display = "none"; 
+                document.querySelector(".search").style.display = "none";
+                document.querySelector(".weather").style.display = "flex"; 
             }
         }
     });
@@ -99,7 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    todoToggle.addEventListener('click', () => {
+    todoToggle.addEventListener('click', (event) => {
+
+        // event.stopPropagation();
+
         if (todoList.classList.contains('collapsed')) {
             todoList.classList.remove('collapsed');
             todoList.classList.add('expanded');
@@ -108,6 +121,78 @@ document.addEventListener('DOMContentLoaded', () => {
             todoList.classList.add('collapsed');
         }
     });
+
+    todoList.addEventListener('click', (event) => {
+
+        if (event.target.tagName === 'SPAN') {
+            const taskItem = event.target.closest('li');
+            if (taskItem) {
+                taskItem.remove();
+                event.stopPropagation(); 
+            }
+        }
+    });
+
+    document.addEventListener('click', (event) => {
+        const isClickInsideToggle = todoToggle.contains(event.target);
+        const isClickInsideList = todoList.contains(event.target);
+
+        if (!isClickInsideToggle && !isClickInsideList) {
+            
+            if (todoList.classList.contains('expanded')) {
+                todoList.classList.remove('expanded');
+                todoList.classList.add('collapsed');
+            }
+        }
+    });
+
+
+    function addTask() {
+        if(inputBox.value === ''){
+            alert("Напишите что-то");
+        } else {
+            let li = document.createElement("li");
+            li.innerHTML = inputBox.value;
+            listConteiner.appendChild(li);
+            let span = document.createElement("span");
+            span.innerHTML = "\u00d7";
+            li.appendChild(span);
+        }
+    
+        inputBox.value = '';
+        ToDo();
+    }
+    
+    listConteiner.addEventListener("click", function(e) {
+        if(e.target.tagName === "LI"){
+            e.target.classList.toggle("checked");
+            ToDo();
+        } else if (e.target.tagName === "SPAN") {
+            e.target.parentElement.remove();
+            ToDo();
+        }
+    }, false);
+    
+    document.addEventListener('keyup', function(event){
+        if(event.code === 'Enter'){
+            addTask(inputBox.value);
+        }
+    })
+    
+    function ToDo(){
+        localStorage.setItem("data", listConteiner.innerHTML);
+    }
+    
+    function showTask(){
+        listConteiner.innerHTML = localStorage.getItem("data");
+    }
+    
+    showTask();
+
+
+
+
+
 
     function updateDateTime() {
         const now = new Date();

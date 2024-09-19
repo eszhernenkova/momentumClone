@@ -27,7 +27,7 @@ body {
     background-size: cover;
     background-image: url('images/clouds.png');
     z-index: -1;
-    filter: brightness(50%)
+    filter: brightness(80%)
     
 }
 
@@ -35,32 +35,40 @@ body {
     position: fixed;
     top: 20px;
     right: 100px;
-    width: 200px;
+    width: 400px;
+
 
 
     .search {
-        width: 10%;
-        align-items: center;
-        justify-content: space-between;
+    //    flex-direction: column;
+        width: 80%;
+        // height: 150px;
+        // padding: 10px;
+        // background: #ebfffc;
+        // border-radius: 15px;
         display: none;
+        .search__content{
+            display: flex;
+        }
 
         input {
-            background: #ebfffc;
+            background: #f8f9f9;
             color: #555;
             padding: 5px 10px;
             height: 30px;
+            border: 1px solid #555;
             border-radius: 30px;
             margin-right: 5px;
             font-size: 18px;
         }
 
-
         button {
-            background: #ebfffc;
+            background: #81e5d6;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
+            border: 1px solid #555;
             padding: 10px;
             width: 30px;
             height: 30px;
@@ -105,12 +113,14 @@ body {
        
     }
 
+   
     &.collapsed {
         max-height: $collapsed-height;
     }
 
     &.expanded {
         max-height: $expanded-height;
+        
     }
 }
 
@@ -136,20 +146,92 @@ body {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 200px;
+    width: 50px;
+    height: 50px;
     background-color: $background-color;
     border: 1px solid $border-color;
     border-radius: 8px;
     box-shadow: $box-shadow;
     transition: max-height 0.3s ease;
     overflow: hidden;
+    color: #555;
+
+
+    h3 {
+        font-size: 20px;
+    }
+
+    input {
+        border: 1px solid #555;
+        border-radius: 5px;
+        width: 90%;
+        height: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    ul {
+        .checked {
+            color: #555;
+            text-decoration: line-through;
+
+            &::before {
+                background-image: url('../images/checked.png');
+            }
+        } 
+
+        li {
+            font-size: 17px;
+            padding: 12px 8px 12px 50px;
+            user-select: none;
+            cursor: pointer;
+            position: relative;
+
+            span {
+                position: absolute;
+                right: 0;
+                top: 5px;
+                width: 40px;
+                height: 40px;
+                font-size: 22px;
+                color: #555;
+                line-height: 40px;
+                text-align: center;
+                border-radius: 50%;
+
+                &:hover {
+                    background: #edeef0;
+                }
+            }
+
+            &::before {
+                content: '';
+                position: absolute;
+                height: 20px;
+                width: 20px;
+                border-radius: 50%;
+                background-image: url('../images/unchecked.png');
+                background-size: cover;
+                background-position: center;
+                top: 12px;
+                left: 8px;
+            }
+
+            
+        }
+    }
+
 
     &.collapsed {
         max-height: $collapsed-height;
     }
 
     &.expanded {
-        max-height: $expanded-height;
+        width: 300px;
+        height: 300px;
+
+        button{
+            display: none;
+        }
     }
 }
 

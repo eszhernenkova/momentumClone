@@ -12,8 +12,11 @@
     <div id="background-slider"></div>
     <div id="weather-block" class="collapsed">
         <div class="search" >
-            <input type="text" placeholder="введите город" spellcheck="false">
-            <button><img src="images/search.png"></button>
+            <div class="search__content">
+                <input type="text" placeholder="введите город" spellcheck="false">
+                <button><img src="images/search.png"></button>
+            </div>
+            
         </div>
         <div class="error">
             <p>Ошибка в названии города</p>
@@ -31,8 +34,12 @@
         <button id="todo-toggle">+</button>
         <div id="todo-content">
             <h3>To-Do List</h3>
-            <ul id="todo-items">
-                <li>пример</li>
+            <div class="row">
+                <input type="text" id="inpur-box" placeholder="Введите текст" spellcheck="false">
+                <button onclick="addTask()">Добавить</button>
+            </div>
+            <ul id="list-conteiner">
+                
             </ul>
         </div>
     </div>
