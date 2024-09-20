@@ -11,13 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchBox = document.querySelector(".search input"); 
     const searchBtn = document.querySelector(".search button");
     const weatherIcon = document.querySelector(".weather-icon");
-    
-   const cityData = document.getElementById("weater");
 
     const defaultCity = "Краснодар";
 
 
-    const inputBox = document.getElementById("inpur-box");
+    const inputBox = document.getElementById("input-box");
     const listConteiner = document.getElementById("list-conteiner");
 
     async function cherWeather(city) {
@@ -53,9 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } 
     }
 
-    
-
-
     weatherBlock.addEventListener('click', (event) => {
         if (event.target !== searchBox && event.target !== searchBtn) {
             if (weatherBlock.classList.contains('collapsed')) {
@@ -74,8 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    
-
     function saveData() {
         const city = document.querySelector(".city").innerHTML;
 
@@ -98,12 +91,20 @@ document.addEventListener('DOMContentLoaded', () => {
         cherWeather(searchBox.value);
         
     });
-    
-    document.addEventListener('keyup', function(event){
-       if(event.code === 'Enter'){
+
+    searchBox.addEventListener('keyup', function(event) {
+        if (event.code === 'Enter' && searchBox.value.trim() !== "") {
             cherWeather(searchBox.value);
-       }
-    })
+            event.preventDefault(); 
+            event.stopPropagation(); 
+        }
+    });
+    
+    // document.addEventListener('keyup', function(event){
+    //    if(event.code === 'Enter'){
+    //         cherWeather(searchBox.value);
+    //    }
+    // })
 
     cherWeather(defaultCity);
 
@@ -111,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     todoToggle.addEventListener('click', (event) => {
 
-        // event.stopPropagation();
+        event.stopPropagation();
 
         if (todoList.classList.contains('collapsed')) {
             todoList.classList.remove('collapsed');
@@ -162,6 +163,14 @@ document.addEventListener('DOMContentLoaded', () => {
         inputBox.value = '';
         ToDo();
     }
+
+    inputBox.addEventListener('keyup', function(event) {
+        if (event.code === 'Enter' && inputBox.value.trim() !== "") {
+            addTask();
+            event.preventDefault(); 
+            event.stopPropagation(); 
+        }
+    });
     
     listConteiner.addEventListener("click", function(e) {
         if(e.target.tagName === "LI"){
@@ -172,12 +181,18 @@ document.addEventListener('DOMContentLoaded', () => {
             ToDo();
         }
     }, false);
-    
+
     document.addEventListener('keyup', function(event){
-        if(event.code === 'Enter'){
-            addTask(inputBox.value);
+        if (event.code === 'Enter') {
+            
+            if (document.activeElement === searchBox && searchBox.value.trim() !== "") {
+                cherWeather(searchBox.value); 
+            } else if (document.activeElement === inputBox && inputBox.value.trim() !== "") {
+                addTask(); 
+            }
         }
-    })
+    });
+    
     
     function ToDo(){
         localStorage.setItem("data", listConteiner.innerHTML);
@@ -188,10 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     showTask();
-
-
-
-
 
 
     function updateDateTime() {
@@ -240,3 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setInterval(updateBackground, 3600000); 
 });
+
+
+
+
