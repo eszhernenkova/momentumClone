@@ -1,3 +1,5 @@
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const weatherBlock = document.getElementById('weather-block');
     const todoList = document.getElementById('todo-list');
@@ -11,6 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchBox = document.querySelector(".search input"); 
     const searchBtn = document.querySelector(".search button");
     const weatherIcon = document.querySelector(".weather-icon");
+
+    const clickableBlock = document.getElementById('weather');
+    const container = document.getElementById('container'); 
+
 
     const defaultCity = "Краснодар";
 
@@ -51,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } 
     }
 
+
     weatherBlock.addEventListener('click', (event) => {
         if (event.target !== searchBox && event.target !== searchBtn) {
             if (weatherBlock.classList.contains('collapsed')) {
@@ -68,6 +75,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+
+
+
     
     function saveData() {
         const city = document.querySelector(".city").innerHTML;
@@ -100,11 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // document.addEventListener('keyup', function(event){
-    //    if(event.code === 'Enter'){
-    //         cherWeather(searchBox.value);
-    //    }
-    // })
 
     cherWeather(defaultCity);
 

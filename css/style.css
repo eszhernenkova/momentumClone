@@ -111,8 +111,13 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  width: 100%;
+  height: 150px;
+  background-color: white;
+  border-radius: 15px;
+  padding: 5px;
 }
-#weather-block .search input {
+#weather-block .search .search__content input {
   background: #f8f9f9;
   color: #555;
   padding: 5px 10px;
@@ -122,7 +127,7 @@ body {
   margin-right: 5px;
   font-size: 18px;
 }
-#weather-block .search button {
+#weather-block .search .search__content button {
   background: #81e5d6;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -140,7 +145,7 @@ body {
   height: 30px;
   cursor: pointer;
 }
-#weather-block .search button img {
+#weather-block .search .search__content button img {
   width: 14px;
 }
 #weather-block .error {
@@ -174,6 +179,13 @@ body {
   max-height: 300px;
   width: 400px;
   right: -50px;
+  top: 50px;
+}
+#weather-block.expanded .weather {
+  width: 200px;
+  position: relative;
+  top: -100px;
+  color: #555;
 }
 
 #date-time-block {
@@ -279,6 +291,24 @@ body {
   top: 12px;
   left: 8px;
 }
+#todo-list #todo-toggle {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  height: 50px;
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  outline: none;
+}
 #todo-list.collapsed {
   max-height: 60px;
 }
@@ -286,17 +316,8 @@ body {
   width: 300px;
   height: 300px;
 }
-#todo-list.expanded button {
+#todo-list.expanded #todo-toggle {
   display: none;
-}
-
-#todo-toggle {
-  background-color: transparent;
-  border: none;
-  width: 100%;
-  height: 60px;
-  cursor: pointer;
-  font-size: 16px;
 }
 
 #todo-content {
