@@ -25,36 +25,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const listConteiner = document.getElementById("list-conteiner");
 
     async function cherWeather(city) {
-        const response = await fetch(apiUrl + city +`&appid=${apiKey}`);
-        if(response.status == 404){
-            document.querySelector(".error").style.display="block";
-            document.querySelector(".weather").style.display="none";
-        } else {
-            const data = await response.json();
+        try {
+            const response = await axios.get(`${apiUrl}${city}&appid=${apiKey}`);
+            const data = response.data;
     
             document.querySelector(".city").innerHTML = data.name;
-            document.querySelector(".temp").innerHTML = Math.round(data.main.temp ) + "°c";
+            document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°c";
     
-            if(data.weather[0].main == "Clouds"){
-                weatherIcon.src = "images/clouds.png"
-            } else if(data.weather[0].main == "Clear"){
-                weatherIcon.src = "images/clear.png"
-            } else if(data.weather[0].main == "Rain"){
-                weatherIcon.src = "images/rain.png"
-            } else if(data.weather[0].main == "Drizzle"){
-                weatherIcon.src = "images/drizzle.png"
-            } else if(data.weather[0].main == "Mist"){
-                weatherIcon.src = "images/mist.png"
+            if (data.weather[0].main === "Clouds") {
+                weatherIcon.src = "images/clouds.png";
+            } else if (data.weather[0].main === "Clear") {
+                weatherIcon.src = "images/clear.png";
+            } else if (data.weather[0].main === "Rain") {
+                weatherIcon.src = "images/rain.png";
+            } else if (data.weather[0].main === "Drizzle") {
+                weatherIcon.src = "images/drizzle.png";
+            } else if (data.weather[0].main === "Mist") {
+                weatherIcon.src = "images/mist.png";
             }
-            
+    
             const weatherElement = document.querySelector(".weather");
             weatherElement.style.display = "flex";
             weatherElement.style.alignItems = "center";
             weatherElement.style.justifyContent = "space-around";
             document.querySelector(".error").style.display = "none";
-
+    
             saveData();
-        } 
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+                document.querySelector(".error").style.display = "block";
+                document.querySelector(".weather").style.display = "none";
+            } else {
+                console.error("Ошибка при получении данных о погоде:", error);
+            }
+        }
     }
 
 
@@ -75,10 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-
-
-
-
     
     function saveData() {
         const city = document.querySelector(".city").innerHTML;

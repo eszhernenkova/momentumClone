@@ -104,7 +104,7 @@ body {
   width: 150px;
 }
 #weather-block .search {
-  width: 80%;
+  width: 82%;
   display: none;
 }
 #weather-block .search .search__content {
@@ -148,6 +148,9 @@ body {
 #weather-block .search .search__content button img {
   width: 14px;
 }
+#weather-block .search .search__content .search__cross {
+  margin: 0 5px 0 5px;
+}
 #weather-block .error {
   text-align: left;
   margin-left: 10px;
@@ -179,7 +182,7 @@ body {
   max-height: 300px;
   width: 400px;
   right: -50px;
-  top: 50px;
+  top: 20px;
 }
 #weather-block.expanded .weather {
   width: 200px;
