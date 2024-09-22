@@ -9,13 +9,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const apiKey = "6784be0ca773a4f9d5d6f512f033dd17";
     const apiUrl = "https://api.openweathermap.org/data/2.5/weather?&units=metric&q=";
 
+    const search = document.querySelector('.search');
+    const searchContent = document.querySelector('.search__content');
+    const openSearchButton = document.querySelector(".open-search");
     
-    const searchBox = document.querySelector(".search input"); 
-    const searchBtn = document.querySelector(".search button");
+    // const searchBox = document.querySelector(".search input"); 
+    const searchBox = searchContent.querySelector('input'); 
+    const searchBtn = document.querySelector(".search__content button");
     const weatherIcon = document.querySelector(".weather-icon");
 
-    const clickableBlock = document.getElementById('weather');
-    const container = document.getElementById('container'); 
 
 
     const defaultCity = "Краснодар";
@@ -63,20 +65,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     weatherBlock.addEventListener('click', (event) => {
-        if (event.target !== searchBox && event.target !== searchBtn) {
+        // Открываем search при клике на weatherBlock
+        if (event.target !== search && event.target !== openSearchButton && event.target !== searchBox) {
             if (weatherBlock.classList.contains('collapsed')) {
                 weatherBlock.classList.remove('collapsed');
                 weatherBlock.classList.add('expanded');
-
-                document.querySelector(".search").style.display = "flex";
-                document.querySelector(".weather").style.display = "flex";
-
+    
+                search.style.display = "flex"; // Показываем search
+                document.querySelector(".weather").style.display = "flex"; // Показываем погоду
             } else {
                 weatherBlock.classList.remove('expanded');
                 weatherBlock.classList.add('collapsed');
-                document.querySelector(".search").style.display = "none";
+                search.style.display = "none"; // Скрываем search
                 document.querySelector(".weather").style.display = "flex"; 
             }
+        }
+    });
+
+
+    // weatherBlock.addEventListener('click', (event) => {
+    //     if (event.target !== searchBox && event.target !== openSearchButton ) {
+    //         if (weatherBlock.classList.contains('collapsed')) {
+    //             weatherBlock.classList.remove('collapsed');
+    //             weatherBlock.classList.add('expanded');
+
+    //             document.querySelector(".search").style.display = "flex";
+    //             document.querySelector(".search__content").style.display = "flex";
+    //             document.querySelector(".weather").style.display = "flex";
+
+    //         } else {
+    //             weatherBlock.classList.remove('expanded');
+    //             weatherBlock.classList.add('collapsed');
+    //             document.querySelector(".search").style.display = "none";
+    //             document.querySelector(".weather").style.display = "flex"; 
+    //         }
+    //     }
+    // });
+
+    openSearchButton.addEventListener('click', (event) => {
+        event.stopPropagation(); // Предотвращаем срабатывание события на родительском элементе
+        if (searchContent.style.display === "flex") {
+            searchContent.style.display = "none"; // Скрываем, если уже открыто
+        } else {
+            searchContent.style.display = "flex"; // Показываем
         }
     });
     
