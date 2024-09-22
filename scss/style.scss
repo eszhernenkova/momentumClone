@@ -15,6 +15,23 @@ body {
     font-family: 'Poppins', sans-serif;
     color:#ddd;
 
+    button {
+        background: #81e5d6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        border: 1px solid #555;
+        padding: 10px;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+    
+        img {
+             width: 14px;
+        }
+    }
+
 }
 
 #background-slider {
@@ -38,7 +55,9 @@ body {
 
 
 
+
     .search {
+        // flex-direction: column;
         width: 82%;
         height: 200px;
         background-color: $background-color;
@@ -46,8 +65,9 @@ body {
         border: 1px solid #555;
         border-radius: 15px;
         padding: 5px;
+        color: #555;
 
-        .open-search {
+        .search__target_open-search {
             background: #81e5d6;
             display: flex;
             align-items: center;
@@ -68,9 +88,6 @@ body {
         .search__content{
             display: none;
             width: 100%;
-            
-            
-            
 
             input {
                 background: #f8f9f9;
@@ -82,30 +99,12 @@ body {
                 font-size: 18px;
             }
 
-            button {
-                background: #81e5d6;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 50%;
-                border: 1px solid #555;
-                padding: 10px;
-                width: 30px;
-                height: 30px;
-                cursor: pointer;
-    
-                img {
-                    width: 14px;
-                }
-            }
-
             .search__cross{
                 margin: 0 5px 0 5px;
             }
     
         }
 
-        
         
     }
 
@@ -157,17 +156,6 @@ body {
         width: 450px;
         right: -50px;
         top: 20px;
-        
-        .weather {
-            display: flex;
-            flex-direction: column;
-            width: 200px;
-            position: relative;
-            top: -150px;
-            color: #555;
-        }
-       
-        
     }
 }
 
