@@ -122,16 +122,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     weatherBlock.addEventListener('click', (event) => {
-<<<<<<< HEAD
-=======
-
->>>>>>> 14455d81c8bc6c37376a41fea335fe7e0c2b675f
         if (event.target !== search && event.target !== openSearchButton && event.target !== searchBox) {
             
             if (weatherBlock.classList.contains('collapsed')) {
                 weatherBlock.classList.remove('collapsed');
                 weatherBlock.classList.add('expanded');
-<<<<<<< HEAD
                 
                 // проверка, есть ли уже склонированный элемент внутри targetElement
                 if (!targetElement.querySelector('.weather')) {
@@ -145,15 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 weatherBlock.classList.remove('expanded');
                 weatherBlock.classList.add('collapsed');
                 search.style.display = "none"; // скрывается search
-=======
-    
-                search.style.display = "flex"; 
-                document.querySelector(".weather").style.display = "flex";
-            } else {
-                weatherBlock.classList.remove('expanded');
-                weatherBlock.classList.add('collapsed');
-                search.style.display = "none"; 
->>>>>>> 14455d81c8bc6c37376a41fea335fe7e0c2b675f
                 document.querySelector(".weather").style.display = "flex"; 
             }
         }
@@ -183,11 +169,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     openSearchButton.addEventListener('click', (event) => {
-        event.stopPropagation(); 
+        event.stopPropagation(); // отмена срабатывание события на родительском элементе
         if (searchContent.style.display === "flex") {
-            searchContent.style.display = "none"; 
+            searchContent.style.display = "none"; // скрыть, если уже открыто
         } else {
-            searchContent.style.display = "flex"; 
+            searchContent.style.display = "flex"; // показать
         }
     });
     
