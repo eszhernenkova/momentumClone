@@ -16,15 +16,10 @@ body {
     color:#ddd;
 
     button {
-        background: #81e5d6;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 50%;
-        border: 1px solid #555;
-        padding: 10px;
-        width: 30px;
-        height: 30px;
+        background: transparent;
         cursor: pointer;
     
         img {
@@ -52,28 +47,28 @@ body {
     top: 20px;
     right: 100px;
     width: 150px;
-
-
-
+    
 
     .search {
-        // flex-direction: column;
-        width: 82%;
-        height: 200px;
+        position: absolute; 
+        top: 100%;
+        left: 0; 
+        flex-direction: column;
+        width: 80%;
+        height: 150px;
         background-color: $background-color;
-        opacity: 0.9;
         border: 1px solid #555;
-        border-radius: 15px;
+        border-radius: 8px;
         padding: 5px;
         color: #555;
+        margin-top: 10px;
 
         .search__target_open-search {
-            background: #81e5d6;
             display: flex;
+            order: 1;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
-            border: 1px solid #555;
+            background: transparent;
             padding: 10px;
             width: 30px;
             height: 30px;
@@ -84,28 +79,21 @@ body {
             }
         }
         
-
         .search__content{
             display: none;
             width: 100%;
 
             input {
-                background: #f8f9f9;
+                background: #fcf9f9;
+                box-shadow: 0px 10px 40px 10px rgba(34, 60, 80, 0.12);
                 color: #555;
                 padding: 5px 10px;
                 height: 30px;
-                border-radius: 30px;
+                border-radius: 8px;
                 margin-right: 5px;
                 font-size: 18px;
             }
-
-            .search__cross{
-                margin: 0 5px 0 5px;
-            }
-    
         }
-
-        
     }
 
     .error {
@@ -119,6 +107,20 @@ body {
 
     .weather {
         width: 200px;
+        flex-direction: column;
+        cursor: pointer;
+
+        .weather__top-info{
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+                display: block;
+                margin-bottom: 8px;
+            }
+        }
 
         .weather-icon{
             width: 50px;
@@ -134,7 +136,7 @@ body {
         h2 {
             font-size: 16px;
             font-weight: 400;
-            margin-top: 5px;
+            // margin-top: 5px;
         }
        
     }
@@ -153,8 +155,8 @@ body {
 
     &.expanded {
         max-height: $expanded-height;
-        width: 450px;
-        right: -50px;
+        width: 360px;
+        right: 0px;
         top: 20px;
     }
 }
@@ -168,12 +170,13 @@ body {
     
     
     #date-time {
-        font-size: 60px;
+        font-size: clamp(1rem, 0.6471rem + 1.8824vw, 3rem);
         color: #ffffff;
         text-align: center;
         
     }
 }
+
 
 
 
@@ -288,20 +291,24 @@ body {
         }
     }
 
+    #todo-content {
+        padding: 10px;
+    }
+    
+    #todo-items {
+        list-style-type: none;
+        padding: 0;
+    
+        li {
+            padding: 5px 0;
+        }
+    }
+
     
 }
 
 
 
-#todo-content {
-    padding: 10px;
-}
 
-#todo-items {
-    list-style-type: none;
-    padding: 0;
 
-    li {
-        padding: 5px 0;
-    }
-}
+
