@@ -26,8 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
     async function fetchWeather(city) {
         try {
             const response = await axios.get(`${apiUrl}${city}&appid=${apiKey}`);
-            console.log("Данные о погоде:", response.data);
             return response.data; 
+
+
         } catch (error) {
             if (error.response && error.response.status === 404) {
                 document.querySelector(".error").style.display = "block";
@@ -42,17 +43,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateWeatherElement(element, data) {
         try {
-            console.log("Обновление элемента погоды с данными:", data);
+            
             const cityElement = element.querySelector(".city");
             const tempElement = element.querySelector(".temp");
-            const weatherIcon = element.querySelector(".weather-icon");
 
             if (cityElement && data.name) {
                 cityElement.innerHTML = data.name;
+                
             }
 
             if (tempElement && data.main) {
                 tempElement.innerHTML = Math.round(data.main.temp) + "°C";
+                console.log("Обновление клона элемента погоды с данными:",data.main.temp);
             }
 
         } catch (error) {
@@ -60,48 +62,56 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function updateWeather(city) {
-        console.log(`Обновление погоды для города: ${city}`);
-        const weatherData = await fetchWeather(city);
-        if (weatherData) {
-            const mainWeatherElement = document.querySelector(".weather");
-            
-            // проверка наличия элемента перед обновлением
-            if (mainWeatherElement) {
-                updateWeatherElement(mainWeatherElement, weatherData); // обновить основной элемент
+    function updateWeather(city) {
+        
+        fetchWeather(city).then(weatherData => {
+            if (weatherData) {
+                const mainWeatherElement = document.querySelector(".weather");
+                
+                // проверка наличия элемента перед обновлением
+                if (mainWeatherElement) {
+                    updateWeatherElement(mainWeatherElement, weatherData);
+    
+                } else {
+                    console.error("Основной элемент погоды не найден.");
+                }
+                
+                saveData(city); 
             } else {
-                console.error("Основной элемент погоды не найден.");
+                console.error("Не удалось получить данные о погоде."); 
             }
-    
-            saveData(city); 
-        } else {
-            console.error("Не удалось получить данные о погоде."); 
-        }
+        }).catch(error => {
+            console.error("Ошибка при обновлении погоды:", error);
+        });
     }
-
-   
     
 
-    function updateSearchWeather(data) {
-        let clonedElement = targetElement.querySelector('.weather');
-        if (clonedElement) {
-            //  клонированный элемент существует, обновить
-            updateWeatherElement(clonedElement, data);
-        } else {
-            //  клонированного элемента нет, создать новый
-            const mainWeatherElement = document.querySelector(".weather");
-            const newClonedElement = mainWeatherElement.cloneNode(true);
-            updateWeatherElement(newClonedElement, data);
-            targetElement.appendChild(newClonedElement);
-        }
-    }
+    // async function updateWeather(city) {
+    //     console.log(`Обновление погоды для города: ${city}`);
+    //     const weatherData = await fetchWeather(city);
+    //     if (weatherData) {
+    //         const mainWeatherElement = document.querySelector(".weather");
+            
+    //         // проверка наличия элемента перед обновлением
+    //         if (mainWeatherElement) {
+    //             updateWeatherElement(mainWeatherElement, weatherData);
+    //             console.log(`Обновление основного элемента погоды для города: ${city}`); // обновить основной элемент
+    //         } else {
+    //             console.error("Основной элемент погоды не найден.");
+    //         }
+            
+    //         saveData(city); 
+    //     } else {
+    //         console.error("Не удалось получить данные о погоде."); 
+    //     }
+    // }
 
     searchBox.addEventListener('keydown', function(event) {
         if (event.code === 'Enter' && searchBox.value.trim() !== "") {
             const city = searchBox.value.trim();
-            console.log("Запрос погоды для города:", city);
-            updateWeather(city); // обновить погоду для введенного города
-    
+            updateWeather(city); 
+
+
             event.preventDefault();
             event.stopPropagation();
         } 
@@ -168,12 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     window.addEventListener('load', loadData);
-
-   
-
-
-
-
 
 
 

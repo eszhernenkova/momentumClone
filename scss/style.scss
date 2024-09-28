@@ -46,7 +46,7 @@ body {
     position: fixed;
     text-align: center;
     top: 20px;
-    right: 100px;
+    right: 20px;
     width: 150px;
     
 
@@ -109,7 +109,7 @@ body {
     }
 
     .weather {
-        width: 200px;
+
         flex-direction: column;
         cursor: pointer;
 
@@ -139,7 +139,6 @@ body {
         h2 {
             font-size: 16px;
             font-weight: 400;
-            // margin-top: 5px;
         }
        
     }

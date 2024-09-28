@@ -117,7 +117,7 @@ body button img {
   position: fixed;
   text-align: center;
   top: 20px;
-  right: 100px;
+  right: 20px;
   width: 150px;
 }
 #weather-block .search {
@@ -183,7 +183,6 @@ body button img {
   color: #ddd;
 }
 #weather-block .weather {
-  width: 200px;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
