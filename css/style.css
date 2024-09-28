@@ -115,6 +115,7 @@ body button img {
 
 #weather-block {
   position: fixed;
+  text-align: center;
   top: 20px;
   right: 100px;
   width: 150px;

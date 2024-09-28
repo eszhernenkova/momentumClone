@@ -1,6 +1,7 @@
 
 
 document.addEventListener('DOMContentLoaded', () => {
+
     const backgroundSlider = document.getElementById('background-slider');
     const inputBox = document.getElementById("input-box");
     const listConteiner = document.getElementById("list-conteiner");
@@ -18,41 +19,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeSearchButton = document.querySelector('.search__cross');
     const defaultCity = "Краснодар";
 
-   
-    function updateWeatherElement(element, data) {
-        element.querySelector(".city").innerHTML = data.name;
-        element.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
-        
-        const weatherIcon = element.querySelector(".weather-icon");
-        if (data.weather[0].main === "Clouds") {
-            weatherIcon.src = "images/clouds.png";
-        } else if (data.weather[0].main === "Clear") {
-            weatherIcon.src = "images/clear.png";
-        } else if (data.weather[0].main === "Rain") {
-            weatherIcon.src = "images/rain.png";
-        } else if (data.weather[0].main === "Drizzle") {
-            weatherIcon.src = "images/drizzle.png";
-        } else if (data.weather[0].main === "Mist") {
-            weatherIcon.src = "images/mist.png";
-        }
-    }
 
-    // получение данных 
+
+ // получение данных 
+
     async function cherWeather(city) {
         try {
             const response = await axios.get(`${apiUrl}${city}&appid=${apiKey}`);
-            const data = response.data;
-    
-            // обновление основного элемента 
-            const mainWeatherElement = document.querySelector(".weather");
-            updateWeatherElement(mainWeatherElement, data);  // обновление верхнего блока
-    
-            // обновление элемента в блоке поиска
-            updateSearchWeather(data);  
-    
-            document.querySelector(".error").style.display = "none";
-            saveData();
+            console.log("Данные о погоде  в основном: ", response.data);
+            return response.data; 
             
+
         } catch (error) {
             if (error.response && error.response.status === 404) {
                 document.querySelector(".error").style.display = "block";
@@ -60,14 +37,99 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 console.error("Ошибка при получении данных о погоде:", error);
             }
+            return null; //  в случае ошибки
         }
     }
 
+
+    
+    
+    function updateWeatherElement(element, data) {
+        try {
+            console.log("Обновление клона элемента погоды с данными:", data);
+
+            const mainWeatherElement = document.querySelector(".weather");
+            if (!mainWeatherElement) {
+                console.error("Элемент погоды не найден."); 
+                return; 
+}
+
+            if (!data || !data.name || !data.main || !data.weather || !data.weather[0]) {
+                console.error('Некорректные данные:', data);
+                return;
+            }
+
+            const cityElement = element.querySelector(".city");
+            const tempElement = element.querySelector(".temp");
+        
+            if (cityElement) {
+                cityElement.innerHTML = data.name;
+            } else {
+                console.error("Элемент для города не найден.");
+            }
+        
+            if (tempElement) {
+                tempElement.innerHTML = Math.round(data.main.temp) + "°C";
+            } else {
+                console.error("Элемент для температуры не найден.");
+            }
+    
+            element.querySelector(".city").innerHTML = data.name;
+            element.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
+    
+            const weatherIcon = element.querySelector(".weather-icon");
+            const weatherArray = data.weather;
+    
+            if (weatherArray && weatherArray.length > 0) {
+                const weatherCondition = weatherArray[0].main;
+
+                if (weatherCondition === "Clouds") {
+                    weatherIcon.src = "images/clouds.png";
+                } else if (weatherCondition === "Clear") {
+                    weatherIcon.src = "images/clear.png";
+                } else if (weatherCondition === "Rain") {
+                    weatherIcon.src = "images/rain.png";
+                } else if (weatherCondition === "Drizzle") {
+                    weatherIcon.src = "images/drizzle.png";
+                } else if (weatherCondition === "Mist") {
+                    weatherIcon.src = "images/mist.png";
+                } else {
+                    weatherIcon.src = "images/default.png";
+                }
+    
+
+            } else {
+                console.error('Нет данных о погоде в массиве:', weatherArray);
+            }
+        } catch (error) {
+            console.error("Ошибка при обновлении элемента погоды:", error);
+        }
+    }
+
+  
     // обновление или создание клонированного элемента внутри блока search
+    async function updateWeather(city) {
+        console.log(`Обновление погоды для города: ${city}`);
+        const weatherData = await cherWeather(city); // Получаем данные о погоде
+    
+        if (weatherData) {
+            const mainWeatherElement = document.querySelector(".weather");
+            // обновить основной элемент погоды
+            updateWeatherElement(mainWeatherElement, weatherData);
+    
+            // обновить клонированный элемент
+            updateSearchWeather(weatherData);
+    
+            saveData(city);  
+
+        } else {
+            console.error("Не удалось получить данные о погоде."); 
+        }
+    }
+
     function updateSearchWeather(data) {
         let clonedElement = targetElement.querySelector('.weather');
-    
-        // если элемент уже существует, удалить
+
         if (clonedElement) {
             clonedElement.remove();
         }
@@ -75,27 +137,32 @@ document.addEventListener('DOMContentLoaded', () => {
         // клонировать основной элемент погоды
         const mainWeatherElement = document.querySelector(".weather");
         const newClonedElement = mainWeatherElement.cloneNode(true);
-        
+    
         // обновить информацию в клонированном элементе
         updateWeatherElement(newClonedElement, data);
     
         // добавить клонированный элемент внутрь блока поиска
         targetElement.appendChild(newClonedElement);
     }
+    
 
+    searchBox.addEventListener('keydown', function(event) {
 
-    searchBox.addEventListener('keypress', function(event) {
         if (event.code === 'Enter' && searchBox.value.trim() !== "") {
             const city = searchBox.value.trim();
+            console.log("Запрос погоды для города:", city);
             
+            updateWeather(city);
             cherWeather(city);
-            updateSearchWeather();
 
             event.preventDefault();
             event.stopPropagation();
-        }
+        } 
     });
 
+    cherWeather(defaultCity);
+
+    
 
     weatherBlock.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -137,8 +204,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     openSearchButton.addEventListener('click', (event) => {
-        event.stopPropagation();
-        searchContent.style.display = "flex";
+        event.stopPropagation(); 
+        searchContent.style.display = "flex"; 
+        searchContent.style.position = "absolute"; 
+        searchContent.style.zIndex = 2; 
     });
 
     closeSearchButton.addEventListener('click', () => {
@@ -154,208 +223,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function loadData() {
         const savedCity = localStorage.getItem("city");
+        console.log("Загруженный город из localStorage:", savedCity);
         if (savedCity) {
-            cherWeather(savedCity);
+            updateWeather(savedCity);  
         } else {
-            cherWeather(defaultCity);
+            updateWeather(defaultCity);  
         }
     }
 
     window.addEventListener('load', loadData);
 
-    cherWeather(defaultCity);
-
-
-    
-
-    // const weatherBlock = document.getElementById('weather-block');
-    // const todoList = document.getElementById('todo-list');
-    // const todoToggle = document.getElementById('todo-toggle');
-
-    // const backgroundSlider = document.getElementById('background-slider');
-
-    // const apiKey = "6784be0ca773a4f9d5d6f512f033dd17";
-    // const apiUrl = "https://api.openweathermap.org/data/2.5/weather?&units=metric&q=";
-
-    // const search = document.querySelector('.search');
-    // const searchContent = document.querySelector('.search__content');
-    // const openSearchButton = document.querySelector(".search__target_open-search");
-    
-
-    // const searchBox = searchContent.querySelector('input'); 
-    // const weatherElement = document.querySelector(".weather");
-
-    // const targetElement = document.querySelector('.search__target');
-
-    // const closeSearchButton = document.querySelector('.search__cross');
+   
 
 
 
-    // const defaultCity = "Краснодар";
 
 
-    // const inputBox = document.getElementById("input-box");
-    // const listConteiner = document.getElementById("list-conteiner");
-
-    // async function cherWeather(city) {
-    //     try {
-    //         const response = await axios.get(`${apiUrl}${city}&appid=${apiKey}`);
-    //         const data = response.data;
-    
-    //         function updateWeatherElement(element) {
-    //             element.querySelector(".city").innerHTML = data.name;
-    //             element.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
-    
-    //             const weatherIcon = element.querySelector(".weather-icon");
-    //             if (data.weather[0].main === "Clouds") {
-    //                 weatherIcon.src = "images/clouds.png";
-    //             } else if (data.weather[0].main === "Clear") {
-    //                 weatherIcon.src = "images/clear.png";
-    //             } else if (data.weather[0].main === "Rain") {
-    //                 weatherIcon.src = "images/rain.png";
-    //             } else if (data.weather[0].main === "Drizzle") {
-    //                 weatherIcon.src = "images/drizzle.png";
-    //             } else if (data.weather[0].main === "Mist") {
-    //                 weatherIcon.src = "images/mist.png";
-    //             }
-    
-    //             element.style.display = "flex";
-    //             element.style.alignItems = "center";
-    //             element.style.justifyContent = "space-around";
-    //         }
-    
-    //         // обновление основного элемента погоды
-    //         const mainWeatherElement = document.querySelector(".weather");
-    //         updateWeatherElement(mainWeatherElement);
-    
-    //         // проверка на существование клонированного элемента и обновление его
-    //         const clonedWeatherElement = document.querySelector('.search__target .weather');
-    //         if (clonedWeatherElement) {
-    //             updateWeatherElement(clonedWeatherElement);
-    //         }
-    
-    //         document.querySelector(".error").style.display = "none";
-    //         saveData();
-            
-    //     } catch (error) {
-    //         if (error.response && error.response.status === 404) {
-    //             document.querySelector(".error").style.display = "block";
-    //             document.querySelector(".weather").style.display = "none";
-    //         } else {
-    //             console.error("Ошибка при получении данных о погоде:", error);
-    //         }
-    //     }
-    // }
-    
-
-    // weatherBlock.addEventListener('click', (event) => {
-    //     event.stopPropagation(); 
-        
-    //     const weatherElement = document.querySelector(".weather");
-    //     const clonedElement = targetElement.querySelector('.weather');
-    
-    //     // если блок уже открыт и клик на .weather, его потомках или clonedElement, не закрываем блок
-    //     if (weatherElement && weatherBlock.classList.contains('expanded') && 
-    //         (event.target === weatherElement || weatherElement.contains(event.target) || 
-    //          (clonedElement && (event.target === clonedElement || clonedElement.contains(event.target))))) {
-    //         return; // Не закрываем блок при клике на .weather или clonedElement
-    //     }
-    
-    //     if (weatherBlock.classList.contains('collapsed')) {
-    //         weatherBlock.classList.remove('collapsed');
-    //         weatherBlock.classList.add('expanded');
-    
-    //         // проверка, есть ли уже склонированный элемент внутри targetElement
-    //         if (!clonedElement) {
-    //             const newClonedElement = weatherElement.cloneNode(true);
-    //             targetElement.appendChild(newClonedElement);
-    //         }
-    
-    //         search.style.display = "flex"; 
-    //         targetElement.style.order = "2";
-    //         weatherElement.style.display = "flex"; 
-    //     } else {
-    //         weatherBlock.classList.remove('expanded');
-    //         weatherBlock.classList.add('collapsed');
-    //         search.style.display = "none"; 
-    //         weatherElement.style.display = "flex"; 
-    //     }
-    // });
-
-
-    // searchContent.addEventListener('click', (event) => {
-    //     event.stopPropagation(); // чтобы не закрывался weatherBlock при клике на search
-    // });
-
-    // document.addEventListener('click', (event) => {
-    //     // проверка, был ли клик за пределами weatherBlock и searchContent
-    //     if (!weatherBlock.contains(event.target) && !searchContent.contains(event.target)) {
-    //         // закрытие weatherBlock, если клик был не внутри него и не внутри searchContent
-    //         weatherBlock.classList.remove('expanded');
-    //         weatherBlock.classList.add('collapsed');
-    //         search.style.display = "none"; 
-    //     }
-    // });
-
-    // openSearchButton.addEventListener('click', (event) => {
-    //     event.stopPropagation(); 
-    //     searchContent.style.display = "flex"; 
-    //     searchContent.style.position = "absolute"; 
-    //     searchContent.style.zIndex = 2; 
-    // });
-    
-
-    // closeSearchButton.addEventListener('click', () => {
-    //     searchContent.style.display = "none"; 
-    // });
-    
-    // document.addEventListener('click', (event) => {
-    //     if (!searchContent.contains(event.target) && !openSearchButton.contains(event.target)) {
-    //         searchContent.style.display = "none"; 
-    //     }
-    // });
-
-    
-    // searchBox.addEventListener('keypress', function(event) {
-    //     if (event.code === 'Enter' && searchBox.value.trim() !== "") {
-    //         const city = searchBox.value.trim();
-    
-    //         // проверка на существование элемента
-    //         const mainWeatherElement = document.querySelector(".weather");
-    //         if (mainWeatherElement) {
-    //             // обновляем элемента
-    //             const cityElement = mainWeatherElement.querySelector(".city");
-    //             if (cityElement) {
-    //                 cityElement.innerHTML = city;
-    //             }
-    //         }
-    //         cherWeather(city);
-            
-    //         event.preventDefault(); 
-    //         event.stopPropagation(); 
-    //     }
-    // });
-    
-
-    // function saveData() {
-    //     const city = document.querySelector(".city").innerHTML;
-
-    //     localStorage.setItem("city", city);
-    // }
-
-    // function loadData() {
-    //     const savedCity = localStorage.getItem("city");
-    
-    //     if (savedCity) {
-    //         cherWeather(savedCity);
-    //     } else {
-    //         cherWeather(defaultCity);
-    //     }
-    // }
-
-    // window.addEventListener('load', loadData);
-
-    // cherWeather(defaultCity);
 
 
     todoToggle.addEventListener('click', (event) => {
